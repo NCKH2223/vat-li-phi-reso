@@ -81,55 +81,70 @@ export const MainPage: React.FC<MainPageProps> = ({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      const registrationItem: RegistrationData = {
-        id: `RESO-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`,
-        fullName: formData.fullName.trim(),
-        phone: formData.phone.trim(),
-        currentGrade: formData.currentGrade.trim(),
-        address: formData.address.trim(),
-        selectedProgram: formData.selectedProgram,
-        grade12Tracks: formData.selectedProgram === 'Vật lí 12' ? [formData.grade12Track] : undefined,
-        // Backward compatibility mapping for downstream components
-        grade: formData.currentGrade.trim(),
-        schoolCity: formData.address.trim(),
-        currentChallenge: formData.selectedProgram === 'Vật lí 12' 
-          ? `Chương trình: ${formData.selectedProgram} (${formData.grade12Track === 'Cơ bản' ? 'Cơ bản & Xây gốc' : 'Luyện thi THPT'})`
-          : `Chương trình: ${formData.selectedProgram}`,
-        learningMode: 'online_live',
-        preferredTime: 'weekend_evening',
-        createdAt: new Date().toISOString(),
-      };
+    // 1. Xác định định hướng rõ ràng cho khối 12
+    const is12 = formData.selectedProgram.includes('12');
+    const trackName = formData.grade12Track === 'Cơ bản' ? 'Cơ bản & Xây gốc' : 'Luyện thi THPT';
+    const dinhHuongValue = is12 ? trackName : '';
 
-      // Save to localStorage
-      try {
-        const stored = localStorage.getItem('phi_reso_registrations');
-        const list: RegistrationData[] = stored ? JSON.parse(stored) : [];
-        list.unshift(registrationItem);
-        localStorage.setItem('phi_reso_registrations', JSON.stringify(list));
-      } catch (err) {
-        console.error('Failed to save to local storage', err);
+    const registrationItem: RegistrationData = {
+      id: `RESO-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`,
+      fullName: formData.fullName.trim(),
+      phone: formData.phone.trim(),
+      currentGrade: formData.currentGrade.trim(),
+      address: formData.address.trim(),
+      selectedProgram: formData.selectedProgram,
+      grade12Tracks: is12 ? [dinhHuongValue] : undefined,
+      grade: formData.currentGrade.trim(),
+      schoolCity: formData.address.trim(),
+      currentChallenge: is12 
+        ? `Chương trình: ${formData.selectedProgram} (${dinhHuongValue})`
+        : `Chương trình: ${formData.selectedProgram}`,
+      learningMode: 'online_live',
+      preferredTime: 'weekend_evening',
+      createdAt: new Date().toISOString(),
+    };
+
+    // 2. GỬI DỮ LIỆU VỀ GOOGLE SHEETS
+    // 👉 Thay đường link exec của bạn vào đây:
+    const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxFTexiUv95Vu4YoibJA0o17GMLRT2vfaY_GZwa5UfFDk_g2EbZ9u1wQZ5pnG7G5teO/exec';
+
+    try {
+      if (GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes('AKfycb...')) {
+        await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            ...registrationItem,
+            grade12Track: dinhHuongValue, // Gửi trực tiếp để Google Sheet nhận đúng cột G
+          }),
+        });
       }
+    } catch (err) {
+      console.error('Lỗi gửi về Google Sheets:', err);
+    }
 
-      setIsSubmitting(false);
-      onSubmitSuccess(registrationItem);
-    }, 500);
+    // 3. Lưu dự phòng vào localStorage
+    try {
+      const stored = localStorage.getItem('phi_reso_registrations');
+      const list: RegistrationData[] = stored ? JSON.parse(stored) : [];
+      list.unshift(registrationItem);
+      localStorage.setItem('phi_reso_registrations', JSON.stringify(list));
+    } catch (err) {
+      console.error('Failed to save to local storage', err);
+    }
+
+    setIsSubmitting(false);
+    onSubmitSuccess(registrationItem);
   };
-
-  const logoDirectUrl = getGoogleDriveDirectLink(BRAND_ASSETS.logoDriveUrl);
-  const teacherAvatarDirectUrl = getGoogleDriveDirectLink(BRAND_ASSETS.teacherAvatarDriveUrl);
-
-  return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 antialiased">
-      
-      {/* 1. HEADER TINH GỌN CHỈ HIỆN LOGO NỔI BẬT & NÚT ĐĂNG KÝ NGAY */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
         <div className="max-w-6xl mx-auto px-3 sm:px-6 h-20 sm:h-24 md:h-26 flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Logo không đóng khung, to rõ và trải dài tự nhiên trên header */}
