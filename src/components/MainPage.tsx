@@ -148,21 +148,21 @@ export const MainPage: React.FC<MainPageProps> = ({
       
       {/* 1. HEADER TINH GỌN CHỨA LOGO NÉT & NÚT ĐĂNG KÝ NGAY */}
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
-        <div className="max-w-6xl mx-auto px-3 sm:px-6 h-20 sm:h-24 md:h-26 flex items-center justify-between gap-3 sm:gap-4">
+        <div className="max-w-6xl mx-auto px-2.5 sm:px-6 h-18 sm:h-24 md:h-26 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Logo không đóng khung, to rõ và trải dài tự nhiên trên header */}
-          <div className="flex items-center shrink-0">
-            <div className="h-14 sm:h-18 md:h-20 flex items-center">
+          <div className="flex items-center min-w-0">
+            <div className="h-12 sm:h-18 md:h-20 flex items-center">
               {(!logoLoaded || logoError) && (
                 <div className="flex items-center gap-2">
-                  <span className="font-serif font-black text-3xl sm:text-4xl md:text-5xl text-sky-950 tracking-tight select-none">Φ.RESO</span>
+                  <span className="font-serif font-black text-2xl min-[360px]:text-3xl sm:text-4xl md:text-5xl text-sky-950 tracking-tight select-none">Φ.RESO</span>
                 </div>
               )}
               {!logoError && (
                 <img
                   src={logoDirectUrl}
                   alt="Logo Φ.RESO"
-                  className={`h-13 sm:h-18 md:h-20 w-auto max-w-[240px] sm:max-w-[340px] md:max-w-[420px] object-contain object-left transition-opacity duration-300 ${
+                  className={`h-10 min-[360px]:h-12 sm:h-18 md:h-20 w-auto max-w-[115px] min-[360px]:max-w-[135px] sm:max-w-[340px] md:max-w-[420px] object-contain object-left transition-opacity duration-300 ${
                     logoLoaded ? 'opacity-100' : 'opacity-0 absolute'
                   }`}
                   onLoad={() => setLogoLoaded(true)}
@@ -174,25 +174,30 @@ export const MainPage: React.FC<MainPageProps> = ({
           </div>
 
           {/* Hotline / Zalo & Nút Đăng Ký Ngay */}
-          <div className="flex items-center gap-2 sm:gap-3.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3.5 shrink-0">
             
             {/* Nút Hotline / Zalo theo chuẩn thiết kế */}
             <a
               href="https://zalo.me/0903471106"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl bg-[#f0f6fa] hover:bg-[#e4eff6] text-slate-800 border border-sky-200/80 shadow-xs transition-all hover:shadow-sm"
+              className="flex items-center gap-1.5 sm:gap-3 px-2 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#f0f6fa] hover:bg-[#e4eff6] text-slate-800 border border-sky-200/80 shadow-2xs transition-all hover:shadow-xs"
               title="Chat Zalo hoặc Gọi hotline: 0903.471.106"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#0088cc] text-white flex items-center justify-center shrink-0 shadow-xs">
-                <Phone className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-current" />
+              <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#0088cc] text-white flex items-center justify-center shrink-0 shadow-xs">
+                <Phone className="w-3.5 h-3.5 sm:w-4.5 sm:h-4.5 fill-current" />
               </div>
-              <div className="text-left">
-                <span className="text-[10px] sm:text-xs font-semibold text-slate-500 block leading-tight">
+              <div className="text-left hidden min-[440px]:block">
+                <span className="text-[9px] sm:text-xs font-semibold text-slate-500 block leading-tight">
                   Hotline / Zalo:
                 </span>
                 <span className="text-xs sm:text-sm md:text-[15px] font-black text-[#00558f] tracking-tight block">
                   {BRAND_ASSETS.hotline}
+                </span>
+              </div>
+              <div className="text-left block min-[440px]:hidden">
+                <span className="text-[11px] font-black text-[#00558f] block leading-none">
+                  Zalo
                 </span>
               </div>
             </a>
@@ -201,9 +206,9 @@ export const MainPage: React.FC<MainPageProps> = ({
             <button
               type="button"
               onClick={scrollToForm}
-              className="flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-2.5 sm:py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-xs sm:text-sm md:text-base shadow-md shadow-amber-500/25 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+              className="flex items-center justify-center gap-1 sm:gap-2 px-2.5 min-[360px]:px-3.5 sm:px-6 py-2 sm:py-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black text-[11px] min-[360px]:text-xs sm:text-sm md:text-base shadow-md shadow-amber-500/25 transition-all hover:shadow-lg active:scale-95 cursor-pointer shrink-0"
             >
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-950" />
+              <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-slate-950 shrink-0" />
               <span className="whitespace-nowrap">ĐĂNG KÝ NGAY</span>
             </button>
           </div>
@@ -215,15 +220,17 @@ export const MainPage: React.FC<MainPageProps> = ({
       <main className="flex-1 py-6 sm:py-12 px-3 sm:px-6 max-w-6xl mx-auto w-full">
         
         {/* Top Slogan Banner */}
-        <div className="text-center mb-6 sm:mb-10 overflow-hidden">
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm md:text-base font-bold tracking-wide shadow-2xs mb-3 max-w-full">
-            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
-            <span className="truncate">{BRAND_ASSETS.slogan}</span>
+        <div className="text-center mb-6 sm:mb-10 w-full flex flex-col items-center px-1">
+          <div className="inline-flex items-center justify-center gap-1 sm:gap-2 px-2 min-[360px]:px-3.5 sm:px-5 py-1 sm:py-2 rounded-full bg-amber-50 border border-amber-200/90 text-amber-900 shadow-2xs mb-2.5 max-w-full">
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
+            <span className="text-[8.5px] min-[340px]:text-[9.5px] min-[370px]:text-[10.5px] min-[400px]:text-[11.5px] min-[430px]:text-xs sm:text-sm md:text-base font-extrabold tracking-tight sm:tracking-normal whitespace-nowrap text-center">
+              {BRAND_ASSETS.slogan}
+            </span>
           </div>
           
           {/* Headline hiển thị trọn vẹn trên 1 dòng trên điện thoại */}
           <div className="w-full flex justify-center px-1">
-            <h1 className="text-[14.5px] min-[360px]:text-[16px] min-[390px]:text-[17.5px] min-[420px]:text-[19px] sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight whitespace-nowrap text-center">
+            <h1 className="text-[13.5px] min-[360px]:text-[15px] min-[390px]:text-[16.5px] min-[420px]:text-[18.5px] sm:text-3xl md:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight whitespace-nowrap text-center">
               {BRAND_ASSETS.quoteHeadline}
             </h1>
           </div>
@@ -460,7 +467,7 @@ export const MainPage: React.FC<MainPageProps> = ({
                       <span className="text-xs sm:text-sm font-bold text-amber-900 block mb-2.5">
                         🎯 Định hướng cho Khối 12 (Chọn 1 trong 2):
                       </span>
-                      <div className="grid grid-cols-2 gap-2.5">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
                         {[
                           { id: 'Cơ bản', label: 'Cơ bản & Xây gốc' },
                           { id: 'Luyện thi THPT', label: 'Luyện thi THPT' },
@@ -471,14 +478,14 @@ export const MainPage: React.FC<MainPageProps> = ({
                               key={item.id}
                               type="button"
                               onClick={() => setFormData({ ...formData, grade12Track: item.id as any })}
-                              className={`py-3 px-3.5 rounded-xl text-xs sm:text-sm font-bold text-left flex items-center gap-2.5 border transition-all cursor-pointer ${
+                              className={`py-2.5 sm:py-3 px-3 sm:px-3.5 rounded-xl text-xs sm:text-sm font-bold text-left flex items-center gap-2.5 border transition-all cursor-pointer ${
                                 isChecked
                                   ? 'bg-white border-amber-500 text-amber-950 shadow-xs ring-2 ring-amber-400/40'
-                                  : 'bg-white/60 border-slate-200 text-slate-600 hover:bg-white'
+                                  : 'bg-white/70 border-slate-200 text-slate-700 hover:bg-white'
                               }`}
                             >
                               <div
-                                className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center text-xs ${
+                                className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 flex items-center justify-center shrink-0 text-xs ${
                                   isChecked
                                     ? 'border-amber-600 bg-amber-500 text-white'
                                     : 'border-slate-300'
@@ -486,7 +493,7 @@ export const MainPage: React.FC<MainPageProps> = ({
                               >
                                 {isChecked && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
                               </div>
-                              <span className="truncate">{item.label}</span>
+                              <span className="whitespace-normal leading-tight font-bold">{item.label}</span>
                             </button>
                           );
                         })}
