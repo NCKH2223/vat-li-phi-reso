@@ -1,0 +1,6 @@
+{
+  "name": "VẬT LÍ Φ.RESO - Đăng Ký Học Thử",
+  "description": "Ứng dụng đăng ký học thử Vật Lí Φ.RESO - Cô Châu Đoan với triết lý hiểu bản chất, tư duy logic và tối ưu chuyển đổi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
