@@ -112,7 +112,7 @@ export const MainPage: React.FC<MainPageProps> = ({
 
     // 2. GỬI DỮ LIỆU VỀ GOOGLE SHEETS
     // 👉 Thay đường link exec của bạn vào đây:
-    const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxFTexiUv95Vu4YoibJA0o17GMLRT2vfaY_GZwa5UfFDk_g2EbZ9u1wQZ5pnG7G5teO/exec';
+    const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwcF2hYK5_l151H5BJgzkx7yRitTkhW1ABRcvA_t9jQl-8BHadO6RdZZGUzXLxLJysd/exec';
 
     try {
       if (GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes('AKfycb...')) {
