@@ -107,3 +107,4 @@ export const CONTACT_INFO = {
   email: 'vatli.phi.reso@gmail.com',
   address: 'Hà Nội & TP. Hồ Chí Minh (Học Online tương tác toàn quốc)',
 };
+export const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbx9dLYWOYcY-aGaVOOaRQgIiNMefPG_qZX5CRGOrZi2oD0RCCFp79aUOpZ4RwQYW-JG/exec';
