@@ -81,16 +81,14 @@ export const MainPage: React.FC<MainPageProps> = ({
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-
     setIsSubmitting(true);
 
-    // 1. Xác định định hướng rõ ràng cho khối 12
+    // Xác định định hướng nếu chọn chương trình khối 12
     const is12 = formData.selectedProgram.includes('12');
-    const trackName = formData.grade12Track === 'Cơ bản' ? 'Cơ bản & Xây gốc' : 'Luyện thi THPT';
-    const dinhHuongValue = is12 ? trackName : '';
+    const dinhHuongValue = is12 ? (formData.grade12Track || 'Luyện thi THPT') : '';
 
     const registrationItem: RegistrationData = {
       id: `RESO-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`,
@@ -110,29 +108,26 @@ export const MainPage: React.FC<MainPageProps> = ({
       createdAt: new Date().toISOString(),
     };
 
-    // 2. GỬI DỮ LIỆU VỀ GOOGLE SHEETS
-    // 👉 Thay đường link exec của bạn vào đây:
-    const GOOGLE_SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwcF2hYK5_l151H5BJgzkx7yRitTkhW1ABRcvA_t9jQl-8BHadO6RdZZGUzXLxLJysd/exec';
-
+    // 1. Gửi dữ liệu về Google Sheets qua Apps Script Webhook
     try {
-      if (GOOGLE_SHEET_WEBHOOK_URL && !GOOGLE_SHEET_WEBHOOK_URL.includes('AKfycb...')) {
+      if (GOOGLE_SHEET_WEBHOOK_URL) {
         await fetch(GOOGLE_SHEET_WEBHOOK_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain;charset=utf-8',
           },
           body: JSON.stringify({
             ...registrationItem,
-            grade12Track: dinhHuongValue, // Gửi trực tiếp để Google Sheet nhận đúng cột G
+            grade12Track: dinhHuongValue,
           }),
         });
       }
     } catch (err) {
-      console.error('Lỗi gửi về Google Sheets:', err);
+      console.error('Lỗi gửi dữ liệu Google Sheets:', err);
     }
 
-    // 3. Lưu dự phòng vào localStorage
+    // 2. Lưu dự phòng vào LocalStorage trên trình duyệt
     try {
       const stored = localStorage.getItem('phi_reso_registrations');
       const list: RegistrationData[] = stored ? JSON.parse(stored) : [];
