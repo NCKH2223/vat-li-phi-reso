@@ -4,7 +4,6 @@ import {
   Sparkles, 
   CheckCircle2, 
   ArrowRight, 
-  Compass, 
   Zap, 
   ShieldCheck, 
   Lock, 
@@ -15,7 +14,7 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { RegistrationData } from '../types';
-import { BRAND_ASSETS } from '../data/courseData';
+import { BRAND_ASSETS, GOOGLE_SHEET_WEBHOOK_URL } from '../data/courseData';
 import { getGoogleDriveDirectLink } from '../utils/googleDrive';
 import { Roadmap } from './Roadmap';
 import { CoreValues } from './CoreValues';
@@ -81,7 +80,7 @@ export const MainPage: React.FC<MainPageProps> = ({
     return Object.keys(errs).length === 0;
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
     setIsSubmitting(true);
@@ -140,6 +139,15 @@ const handleSubmit = async (e: React.FormEvent) => {
     setIsSubmitting(false);
     onSubmitSuccess(registrationItem);
   };
+
+  const logoDirectUrl = getGoogleDriveDirectLink(BRAND_ASSETS.logoDriveUrl);
+  const teacherAvatarDirectUrl = getGoogleDriveDirectLink(BRAND_ASSETS.teacherAvatarDriveUrl);
+
+  return (
+    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-800 antialiased">
+      
+      {/* 1. HEADER TINH GỌN CHỨA LOGO NÉT & NÚT ĐĂNG KÝ NGAY */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-xs">
         <div className="max-w-6xl mx-auto px-3 sm:px-6 h-20 sm:h-24 md:h-26 flex items-center justify-between gap-3 sm:gap-4">
           
           {/* Logo không đóng khung, to rõ và trải dài tự nhiên trên header */}
@@ -226,11 +234,11 @@ const handleSubmit = async (e: React.FormEvent) => {
           {/* 2. HERO & UY TÍN CỐT LÕI (Bên trái / Phía trên) */}
           <div className="lg:col-span-7 space-y-6 sm:space-y-8">
             
-            {/* Teacher Avatar & Resonance Quote Card (To hơn, vừa vặn với dung lượng chữ) */}
+            {/* Teacher Avatar & Resonance Quote Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-9 border border-sky-100 shadow-md relative overflow-hidden">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-7">
                 
-                {/* Avatar Cô Châu Đoan - Kích thước to, rõ nét */}
+                {/* Avatar Cô Châu Đoan */}
                 <div className="flex flex-col items-center shrink-0">
                   <div className="relative w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-3xl overflow-hidden border-3 border-sky-200 shadow-lg bg-slate-100 group">
                     <img
@@ -292,7 +300,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           </div>
 
-          {/* 3. FORM ĐĂNG KÝ HỌC THỬ NỔI BẬT (Bên phải / Khung card trắng viền bóng) */}
+          {/* 3. FORM ĐĂNG KÝ HỌC THỬ NỔI BẬT */}
           <div className="lg:col-span-5 sticky top-24">
             <div
               id="dang-ky-hoc-thu"
@@ -311,7 +319,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
                 
-                {/* 1. Họ và tên (Bắt buộc) */}
+                {/* 1. Họ và tên */}
                 <div>
                   <label className="block text-sm sm:text-base font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
                     <User className="w-4 h-4 text-sky-600" />
@@ -336,7 +344,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   )}
                 </div>
 
-                {/* 2. Số điện thoại (Bắt buộc, 10 số) */}
+                {/* 2. Số điện thoại */}
                 <div>
                   <label className="block text-sm sm:text-base font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
                     <Phone className="w-4 h-4 text-sky-600" />
@@ -363,7 +371,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   )}
                 </div>
 
-                {/* 3. Lớp đang học (Tự nhập: 10.7 hoặc 12A5) */}
+                {/* 3. Lớp đang học */}
                 <div>
                   <label className="block text-sm sm:text-base font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
                     <GraduationCap className="w-4 h-4 text-sky-600" />
@@ -391,7 +399,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   )}
                 </div>
 
-                {/* 4. Địa chỉ (Xã/Phường, Tỉnh/Thành phố) */}
+                {/* 4. Địa chỉ */}
                 <div>
                   <label className="block text-sm sm:text-base font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
                     <MapPin className="w-4 h-4 text-sky-600" />
@@ -416,7 +424,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   )}
                 </div>
 
-                {/* 5. Chương trình học (Radio buttons: Vật lí 10, Vật lí 11, Vật lí 12) */}
+                {/* 5. Chương trình học */}
                 <div>
                   <label className="block text-sm sm:text-base font-bold text-slate-800 mb-2 flex items-center gap-1.5">
                     <Layers className="w-4 h-4 text-sky-600" />
@@ -446,7 +454,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                     ))}
                   </div>
 
-                  {/* 5.1 LOGIC ĐỘNG: Nếu chọn "Vật lí 12", chọn 1 trong 2: Cơ bản & Xây gốc hoặc Luyện thi THPT (bỏ ĐGNL) */}
+                  {/* 5.1 LOGIC ĐỘNG: Nếu chọn "Vật lí 12" */}
                   {formData.selectedProgram === 'Vật lí 12' && (
                     <div className="mt-3.5 p-3.5 sm:p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 animate-in fade-in slide-in-from-top-2 duration-300">
                       <span className="text-xs sm:text-sm font-bold text-amber-900 block mb-2.5">
@@ -487,7 +495,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   )}
                 </div>
 
-                {/* Submit Action Button */}
+                {/* Submit Button */}
                 <div className="pt-2.5">
                   <button
                     type="submit"
